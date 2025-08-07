@@ -1,0 +1,10 @@
+.vscode
+*.log
+composer.lock
+config.php
+/api/config.php
+/image/cache
+/image/catalog/api
+/system/storage
+/system/storage/vendor
+!index.html
