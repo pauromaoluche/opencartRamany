@@ -1,6 +1,8 @@
 <?php
 class ControllerStartupSass extends Controller {
 	public function index() {
+		require_once('/var/www/html/system/storage/vendor/autoload.php');
+
 		$file = DIR_APPLICATION . 'view/stylesheet/bootstrap.css';
 
 		if (!is_file($file) || !$this->config->get('developer_sass')) {

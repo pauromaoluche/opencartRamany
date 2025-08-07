@@ -2,6 +2,7 @@ version: '3.7'
 
 volumes:
     ocbr_database:
+    ocbr_storage:
 
 networks:
     ocbr_network:
@@ -24,12 +25,25 @@ services:
             - USERNAME=admin
             - PASSWORD=admin
             - HTTP_SERVER=http://localhost:8080/
+            - PUID=1000
+            - PGID=1000
         networks:
             - ocbr_network
         volumes:
             - ./:/var/www/html
+            - ocbr_storage:/var/www/storage
         depends_on:
             - ocbr_db
+        command: |
+            bash -c "
+            mkdir -p /var/www/storage/cache &&
+            mkdir -p /var/www/storage/logs &&
+            usermod -u 1000 www-data &&
+            groupmod -g 1000 www-data &&
+            chown -R www-data:www-data /var/www/html /var/www/storage &&
+            chmod -R 775 /var/www/html /var/www/storage &&
+            apache2-foreground
+            "
 
     ocbr_db:
         image: mysql:5.7
